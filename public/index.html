@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontrol Saklar Website Anda</title>
+    <!-- Tailwind CSS CDN for quick styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -28,7 +29,8 @@
         <div class="flex flex-col items-center gap-4 mb-8">
             <label for="toggleSwitch" class="text-lg font-medium">Status Website:</label>
             <div class="relative inline-block w-20 h-10 select-none transition duration-200 ease-in-out">
-                <input type="checkbox" id="toggleSwitch" class="hidden">
+                <!-- Atribut 'checked' telah dihapus di sini -->
+                <input type="checkbox" id="toggleSwitch" class="hidden"> 
                 <div class="toggle-track bg-gray-600 border border-gray-500 w-full h-full rounded-full shadow-inner cursor-pointer transition-colors duration-300 ease-in-out"></div>
                 <div class="toggle-thumb absolute w-8 h-8 bg-white rounded-full shadow transform transition-transform duration-300 ease-in-out left-1 top-1"></div>
             </div>
@@ -64,12 +66,13 @@
         const jsonOutput = document.getElementById('jsonOutput');
         const copyButton = document.getElementById('copyButton');
 
-        // Initial state
-        let currentStatus = true; // Website starts as active (adjust if needed)
+        // Variabel currentStatus tidak perlu diinisialisasi di sini,
+        // karena akan langsung diambil dari toggleSwitch.checked di updateStatusDisplay().
+        let currentStatus; 
 
         // Function to update JSON output and status text
         function updateStatusDisplay() {
-            currentStatus = toggleSwitch.checked;
+            currentStatus = toggleSwitch.checked; // Mengambil status langsung dari elemen DOM
             statusText.textContent = currentStatus ? 'AKTIF' : 'NONAKTIF';
             statusText.className = currentStatus ? 'text-xl font-semibold text-green-400' : 'text-xl font-semibold text-red-400';
             jsonOutput.value = JSON.stringify({ active: currentStatus }, null, 2); // Pretty print JSON
@@ -77,17 +80,6 @@
 
         // Add event listener for the toggle switch
         toggleSwitch.addEventListener('change', updateStatusDisplay);
-
-        // Add event listener for copy button
-        copyButton.addEventListener('click', () => {
-            jsonOutput.select(); // Select the text in the textarea
-            document.execCommand('copy'); // Copy the selected text (deprecated but widely supported)
-            // Modern way: navigator.clipboard.writeText(jsonOutput.value);
-            copyButton.textContent = 'Disalin!';
-            setTimeout(() => {
-                copyButton.textContent = 'Salin JSON ke Clipboard';
-            }, 2000); // Reset button text after 2 seconds
-        });
 
         // Custom CSS for the toggle switch
         const style = document.createElement('style');
@@ -109,7 +101,8 @@
         document.head.appendChild(style);
 
         // Initialize display on load
-        updateStatusDisplay();
+        // Panggil ini sekali di akhir script untuk memastikan semua elemen sudah dimuat
+        updateStatusDisplay(); 
     </script>
 </body>
 </html>
