@@ -1,7 +1,7 @@
 {
   "name": "my-website-switcher",
   "version": "1.0.0",
-  "description": "A simple project to control website active status via a static JSON file hosted on Vercel.",
+  "description": "A web UI and API for toggling website active status.",
   "main": "public/index.html",
   "scripts": {
     "start": "npx serve public/",
@@ -11,8 +11,12 @@
     "vercel",
     "static-site",
     "switcher",
-    "control"
+    "control",
+    "serverless"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "redis": "^4.6.14"
+  }
 }
