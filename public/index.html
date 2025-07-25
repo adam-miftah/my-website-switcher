@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontrol Saklar Website Anda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #e2e8f0; /* Light text */
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl max-w-lg w-full text-center border border-gray-700">
+        <h1 class="text-3xl font-bold mb-6 text-blue-400">Saklar Kontrol Website</h1>
+        <p class="mb-6 text-gray-300">
+            Gunakan saklar di bawah ini untuk mengubah status website utama Anda.
+            <strong class="text-yellow-400">PENTING:</strong> Setelah mengubah status, Anda harus **menyalin JSON yang dihasilkan** lalu **mengedit dan meng-commit file `status.json` di repository Git Vercel Anda**. Vercel akan otomatis mendeploy ulang.
+        </p>
+
+        <div class="flex flex-col items-center gap-4 mb-8">
+            <label for="toggleSwitch" class="text-lg font-medium">Status Website:</label>
+            <div class="relative inline-block w-20 h-10 select-none transition duration-200 ease-in-out">
+                <input type="checkbox" id="toggleSwitch" class="hidden" checked>
+                <div class="toggle-track bg-gray-600 border border-gray-500 w-full h-full rounded-full shadow-inner cursor-pointer transition-colors duration-300 ease-in-out"></div>
+                <div class="toggle-thumb absolute w-8 h-8 bg-white rounded-full shadow transform transition-transform duration-300 ease-in-out left-1 top-1"></div>
+            </div>
+            <span id="statusText" class="text-xl font-semibold text-green-400">AKTIF</span>
+        </div>
+
+        <div class="mb-6">
+            <label for="jsonOutput" class="block text-left text-sm font-medium text-gray-400 mb-2">JSON yang Perlu Anda SALIN &amp; TEMPILKAN ke `status.json` di Git:</label>
+            <textarea id="jsonOutput" rows="4" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 font-mono text-sm resize-none focus:ring-blue-500 focus:border-blue-500" readonly></textarea>
+        </div>
+
+        <button id="copyButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+            Salin JSON ke Clipboard
+        </button>
+
+        <p class="mt-8 text-sm text-gray-400">
+            <strong class="text-orange-400">ALUR KERJA PENTING:</strong>
+            <ol class="list-decimal list-inside text-left mt-2">
+                <li>Ubah saklar di atas.</li>
+                <li>Salin teks JSON dari kotak di atas.</li>
+                <li>Buka **repository Git** proyek saklar Anda (misalnya di GitHub/GitLab).</li>
+                <li>Navigasi ke file <code class="bg-gray-700 p-1 rounded">public/status.json</code>.</li>
+                <li>Edit file tersebut, **hapus konten lama dan tempelkan konten JSON yang baru Anda salin**.</li>
+                <li>**Commit perubahan** ke repository Git Anda.</li>
+                <li>Vercel akan secara otomatis mendeploy ulang proyek saklar Anda. Setelah deployment Vercel selesai, website utama Anda (di Hostinger) akan membaca status baru ini dalam beberapa detik.</li>
+            </ol>
+        </p>
+    </div>
+
+    <script>
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        const statusText = document.getElementById('statusText');
+        const jsonOutput = document.getElementById('jsonOutput');
+        const copyButton = document.getElementById('copyButton');
+
+        // Initial state
+        let currentStatus = true; // Website starts as active (adjust if needed)
+
+        // Function to update JSON output and status text
+        function updateStatusDisplay() {
+            currentStatus = toggleSwitch.checked;
+            statusText.textContent = currentStatus ? 'AKTIF' : 'NONAKTIF';
+            statusText.className = currentStatus ? 'text-xl font-semibold text-green-400' : 'text-xl font-semibold text-red-400';
+            jsonOutput.value = JSON.stringify({ active: currentStatus }, null, 2); // Pretty print JSON
+        }
+
+        // Add event listener for the toggle switch
+        toggleSwitch.addEventListener('change', updateStatusDisplay);
+
+        // Add event listener for copy button
+        copyButton.addEventListener('click', () => {
+            jsonOutput.select(); // Select the text in the textarea
+            document.execCommand('copy'); // Copy the selected text (deprecated but widely supported)
+            // Modern way: navigator.clipboard.writeText(jsonOutput.value);
+            copyButton.textContent = 'Disalin!';
+            setTimeout(() => {
+                copyButton.textContent = 'Salin JSON ke Clipboard';
+            }, 2000); // Reset button text after 2 seconds
+        });
+
+        // Custom CSS for the toggle switch
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .toggle-track {
+                position: relative;
+            }
+            .toggle-thumb {
+                left: 4px; /* Default position for unchecked */
+            }
+            #toggleSwitch:checked + .toggle-track {
+                background-color: #22c55e; /* Green when checked */
+                border-color: #16a34a;
+            }
+            #toggleSwitch:checked + .toggle-track .toggle-thumb {
+                transform: translateX(36px); /* Move to the right when checked */
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize display on load
+        updateStatusDisplay();
+    </script>
+</body>
+</html>

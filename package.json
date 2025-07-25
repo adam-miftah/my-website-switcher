@@ -1,0 +1,18 @@
+{
+  "name": "my-website-switcher",
+  "version": "1.0.0",
+  "description": "A simple project to control website active status via a static JSON file hosted on Vercel.",
+  "main": "public/index.html",
+  "scripts": {
+    "start": "npx serve public/",
+    "test": "echo \"No test specified\""
+  },
+  "keywords": [
+    "vercel",
+    "static-site",
+    "switcher",
+    "control"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
