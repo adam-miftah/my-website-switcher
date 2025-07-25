@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontrol Saklar Website Anda</title>
-    <!-- Tailwind CSS CDN for quick styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -18,14 +17,6 @@
         }
 
         /* Custom CSS for the toggle switch */
-<<<<<<< HEAD
-=======
-        /*
-         * Kita akan menggunakan pola di mana <label> adalah elemen yang dapat diklik
-         * dan berisi visual toggle (track dan thumb).
-         * Checkbox itu sendiri tetap tersembunyi.
-         */
->>>>>>> 8eb064bcd554602e41b14d213e136dd9844fa70c
         .toggle-container {
             position: relative;
             display: inline-block;
@@ -33,18 +24,10 @@
             height: 40px; /* h-10 */
             cursor: pointer;
             user-select: none;
-<<<<<<< HEAD
         }
 
         .toggle-track {
             position: relative;
-=======
-            /* Pastikan label ini adalah target klik untuk checkbox tersembunyi */
-        }
-
-        .toggle-track {
-            position: relative; /* Penting untuk positioning absolute thumb */
->>>>>>> 8eb064bcd554602e41b14d213e136dd9844fa70c
             width: 100%;
             height: 100%;
             background-color: #4a5568; /* bg-gray-600 */
@@ -52,11 +35,7 @@
             border-radius: 9999px; /* rounded-full */
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); /* shadow-inner */
             transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
-<<<<<<< HEAD
             overflow: hidden;
-=======
-            overflow: hidden; /* Memastikan thumb tidak keluar dari track */
->>>>>>> 8eb064bcd554602e41b14d213e136dd9844fa70c
         }
 
         .toggle-thumb {
@@ -67,35 +46,17 @@
             border-radius: 9999px; /* rounded-full */
             box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* shadow */
             transition: transform 0.3s ease-in-out;
-<<<<<<< HEAD
             left: 4px; /* Initial position */
             top: 4px; /* Initial position */
         }
 
-=======
-            left: 4px; /* Posisi awal thumb (sesuai padding 4px) */
-            top: 4px; /* Posisi awal thumb (sesuai padding 4px) */
-        }
-
-        /*
-         * Ketika checkbox tersembunyi (#toggleSwitch) dicentang,
-         * kita menargetkan .toggle-track dan .toggle-thumb yang berada
-         * di dalam <label> yang terkait dengan checkbox tersebut.
-         */
->>>>>>> 8eb064bcd554602e41b14d213e136dd9844fa70c
         #toggleSwitch:checked + .toggle-container .toggle-track {
             background-color: #22c55e; /* Green when checked */
             border-color: #16a34a;
         }
 
         #toggleSwitch:checked + .toggle-container .toggle-track .toggle-thumb {
-<<<<<<< HEAD
             transform: translateX(44px); /* Move to the right */
-=======
-            /* Perhitungan: (lebar track - lebar thumb) - (padding kiri + padding kanan) */
-            /* (80px - 32px) - (4px + 0px) = 44px */
-            transform: translateX(44px); /* Pindahkan thumb ke kanan */
->>>>>>> 8eb064bcd554602e41b14d213e136dd9844fa70c
         }
     </style>
 </head>
@@ -108,25 +69,13 @@
 
         <div class="flex flex-col items-center gap-4 mb-8">
             <label for="toggleSwitch" class="text-lg font-medium">Status Website:</label>
-<<<<<<< HEAD
             <input type="checkbox" id="toggleSwitch" class="hidden">
-=======
-            <!-- Checkbox tersembunyi -->
-            <input type="checkbox" id="toggleSwitch" class="hidden">
-            
-            <!-- Visual toggle, terhubung dengan checkbox melalui 'for' attribute -->
->>>>>>> 8eb064bcd554602e41b14d213e136dd9844fa70c
             <label for="toggleSwitch" class="toggle-container">
                 <div class="toggle-track">
                     <div class="toggle-thumb"></div>
                 </div>
             </label>
-<<<<<<< HEAD
             <span id="statusText" class="text-xl font-semibold text-green-400">MEMUAT...</span>
-=======
-            
-            <span id="statusText" class="text-xl font-semibold text-green-400">AKTIF</span>
->>>>>>> 8eb064bcd554602e41b14d213e136dd9844fa70c
         </div>
 
         <p id="message" class="mt-4 text-sm text-gray-400"></p>
@@ -141,7 +90,6 @@
         const statusText = document.getElementById('statusText');
         const messageElem = document.getElementById('message'); // Untuk pesan status update
 
-<<<<<<< HEAD
         // URL API Anda, Vercel akan menghasilkan ini setelah deployment
         const GET_STATUS_API_URL = '/api/get-status'; // Relative path works on Vercel
         const SET_STATUS_API_URL = '/api/set-status'; // Relative path works on Vercel
@@ -156,18 +104,6 @@
             } else {
                 messageElem.className = 'mt-4 text-sm text-gray-400';
             }
-=======
-        // Variabel currentStatus tidak perlu diinisialisasi di sini,
-        // karena akan langsung diambil dari toggleSwitch.checked di updateStatusDisplay().
-        let currentStatus;
-
-        // Function to update JSON output and status text
-        function updateStatusDisplay() {
-            currentStatus = toggleSwitch.checked; // Mengambil status langsung dari elemen DOM
-            statusText.textContent = currentStatus ? 'AKTIF' : 'NONAKTIF';
-            statusText.className = currentStatus ? 'text-xl font-semibold text-green-400' : 'text-xl font-semibold text-red-400';
-            jsonOutput.value = JSON.stringify({ active: currentStatus }, null, 2); // Pretty print JSON
->>>>>>> 8eb064bcd554602e41b14d213e136dd9844fa70c
         }
 
         // Fungsi untuk mendapatkan status website dari API dan menginisialisasi toggle
@@ -189,7 +125,6 @@
             }
         }
 
-<<<<<<< HEAD
         // Fungsi untuk mengirim status baru ke API
         async function setWebsiteStatus(newStatus) {
             showMessage('Mengirim perubahan status...', 'info');
@@ -234,11 +169,6 @@
 
         // Inisialisasi: Dapatkan status awal saat halaman dimuat
         getWebsiteStatus();
-=======
-        // Initialize display on load
-        // Panggil ini sekali di akhir script untuk memastikan semua elemen sudah dimuat
-        updateStatusDisplay();
->>>>>>> 8eb064bcd554602e41b14d213e136dd9844fa70c
     </script>
 </body>
 </html>
