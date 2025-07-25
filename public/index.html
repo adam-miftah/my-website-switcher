@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontrol Saklar Website Anda</title>
+    <!-- Tailwind CSS CDN for quick styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -88,13 +89,11 @@
     <script>
         const toggleSwitch = document.getElementById('toggleSwitch');
         const statusText = document.getElementById('statusText');
-        const messageElem = document.getElementById('message'); // Untuk pesan status update
+        const messageElem = document.getElementById('message');
 
-        // URL API Anda, Vercel akan menghasilkan ini setelah deployment
-        const GET_STATUS_API_URL = '/api/get-status'; // Relative path works on Vercel
-        const SET_STATUS_API_URL = '/api/set-status'; // Relative path works on Vercel
+        const GET_STATUS_API_URL = '/api/get-status';
+        const SET_STATUS_API_URL = '/api/set-status';
 
-        // Fungsi untuk menampilkan pesan
         function showMessage(text, type = 'info') {
             messageElem.textContent = text;
             if (type === 'success') {
@@ -106,7 +105,6 @@
             }
         }
 
-        // Fungsi untuk mendapatkan status website dari API dan menginisialisasi toggle
         async function getWebsiteStatus() {
             showMessage('Memuat status awal...');
             try {
@@ -115,18 +113,20 @@
                     throw new Error(`Failed to fetch status: ${response.status} ${response.statusText}`);
                 }
                 const data = await response.json();
-                toggleSwitch.checked = data.active; // Setel state toggle berdasarkan data API
-                updateStatusDisplay(); // Perbarui tampilan UI
+                toggleSwitch.checked = data.active;
+                updateStatusDisplay();
                 showMessage('Status berhasil dimuat.', 'success');
             } catch (error) {
                 console.error("Error fetching initial website status:", error);
                 showMessage('Gagal memuat status awal. Coba refresh halaman.', 'error');
-                toggleSwitch.disabled = true; // Nonaktifkan toggle jika gagal
+                toggleSwitch.disabled = true;
             }
         }
 
-        // Fungsi untuk mengirim status baru ke API
         async function setWebsiteStatus(newStatus) {
+            // --- TAMBAHKAN LOG INI DI FRONTEND ---
+            console.log(`[Frontend] Attempting to set status to: ${newStatus}`);
+            // --- END LOG ---
             showMessage('Mengirim perubahan status...', 'info');
             try {
                 const response = await fetch(SET_STATUS_API_URL, {
@@ -143,31 +143,26 @@
 
                 const data = await response.json();
                 showMessage(`Status berhasil diperbarui menjadi ${data.active ? 'AKTIF' : 'NONAKTIF'}.`, 'success');
-                // updateStatusDisplay() sudah dipanggil oleh event listener
             } catch (error) {
                 console.error("Error setting website status:", error);
                 showMessage('Gagal memperbarui status. Periksa konsol.', 'error');
-                // Rollback toggle state jika gagal?
-                toggleSwitch.checked = !newStatus; // Kembalikan ke state sebelum mencoba
+                toggleSwitch.checked = !newStatus;
                 updateStatusDisplay();
             }
         }
 
-        // Fungsi untuk memperbarui tampilan UI berdasarkan state toggle
         function updateStatusDisplay() {
             const currentStatus = toggleSwitch.checked;
             statusText.textContent = currentStatus ? 'AKTIF' : 'NONAKTIF';
             statusText.className = currentStatus ? 'text-xl font-semibold text-green-400' : 'text-xl font-semibold text-red-400';
         }
 
-        // Event listener untuk perubahan toggle
         toggleSwitch.addEventListener('change', () => {
             const newStatus = toggleSwitch.checked;
             setWebsiteStatus(newStatus);
-            updateStatusDisplay(); // Perbarui tampilan segera
+            updateStatusDisplay();
         });
 
-        // Inisialisasi: Dapatkan status awal saat halaman dimuat
         getWebsiteStatus();
     </script>
 </body>
